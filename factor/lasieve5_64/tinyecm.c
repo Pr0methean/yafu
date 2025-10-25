@@ -30,6 +30,7 @@ either expressed or implied, of the FreeBSD Project.
 #include "gmp.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "microecm.h"
 #include "if.h"
 #include "gmp-aux.h"

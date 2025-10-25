@@ -18,9 +18,7 @@ benefit from your work.
 #include "batch_factor.h"
 #include "threadpool.h"
 
-#ifdef __INTEL_LLVM_COMPILER
 #include <pthread.h>
-#endif
 #include <math.h>
 
 #ifdef USE_NFS

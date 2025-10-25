@@ -73,7 +73,7 @@ int fermat_prp_64x1(uint64_t n)
 
 	uint64_t m = 1ULL << (62 - __lzcnt64(n));   // set a mask at the leading bit - 2
 
-#elif defined(__GNUC__) || defined(__INTEL_LLVM_COMPILER)
+#else
 
 	uint64_t m = 1ULL << (62 - __builtin_clzll(n));
 
@@ -92,7 +92,7 @@ int fermat_prp_64x1(uint64_t n)
 
 	uint64_t m = 1ULL << (62 - pos);   // set a mask at the leading bit - 2
 
-#elif defined(__GNUC__) || defined(__INTEL_LLVM_COMPILER)
+#else
 
 	uint64_t m = 1ULL << (62 - __builtin_clzll(n));
 

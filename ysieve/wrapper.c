@@ -33,9 +33,7 @@ SOFTWARE.
 #include <string.h>
 #include <math.h>
 #include "threadpool.h"
-#if USE_AVX512F
 #include "tinyprp.h"
-#endif
 
 
 // known issues:

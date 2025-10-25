@@ -29,8 +29,8 @@
 # but ulong is set to 8 bytes in siever_config.h when compiling lasieve.  Changing the siever_config
 # definition breaks the montgomery asm code.  An easier solution is to set the following new definition:
 # BITS_PER_GMP_ULONG, and a few relevant lines of code in mpz-ull.c
-CFLAGS=-Wall -Wno-unused-variable -Wno-unused-function -O2 -Ofast -DULL_NO_UL -DBITS_PER_GMP_ULONG=32 -fomit-frame-pointer -march=native -funroll-loops  \
-	-I. -I../../../gmp-install/mingw/include -L../../../gmp-install/mingw/lib -lgmp -I../../include -fcommon
+CFLAGS=-Wall -Wno-unused-variable -Wno-unused-function -O3 -flto -DULL_NO_UL -DBITS_PER_GMP_ULONG=32 -fomit-frame-pointer -march=native -funroll-loops  \
+	-I. -I/usr/local/include -L../../../gmp-install/mingw/lib -lgmp -I../../include -fcommon
 	
 #clang
 #CFLAGS= -Wall -Wno-unused-variable -Wno-unused-function -Ofast -march=native -I/Users/searle/progs/ensc-dependencies/include
@@ -40,7 +40,7 @@ CFLAGS=-Wall -Wno-unused-variable -Wno-unused-function -O2 -Ofast -DULL_NO_UL -D
 #endif
 
 
-GMP_LIB=../../../gmp-install/mingw/lib/libgmp.a
+GMP_LIB=/usr/local/lib/libgmp.a
 #For windows
 #GMP_LIB=-Lc:/Users/steve/progs/local/lib -lgmp -lws2_32
 #Using brew installed gmp
@@ -50,9 +50,9 @@ GMP_LIB=../../../gmp-install/mingw/lib/libgmp.a
 
 include paths
 
-CC=gcc  $(CFLAGS)
+#CC=gcc  $(CFLAGS)
 #CC=gcc-4.9  $(CFLAGS)
-#CC=clang  $(CFLAGS)
+CC=clang-20  $(CFLAGS)
 
 #CTANGLE=ctangle
 CTANGLE=../../../cweb-master/ctangle

@@ -201,6 +201,8 @@ void qs_savefile_read_line(char *buf, size_t max_len, qs_savefile_t *s) {
 #endif
 }
 
+void qs_savefile_flush(qs_savefile_t *s);
+
 /*--------------------------------------------------------------------*/
 void qs_savefile_write_line(qs_savefile_t *s, char *buf) {
 

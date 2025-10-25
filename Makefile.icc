@@ -22,10 +22,11 @@ WIN = 0
 WIN64 = 0
 VBITS = 64
 
-CC = icc
-CFLAGS = -fno-common -g -m64 -std=gnu99 -DUSE_SSE2 -fPIE -DUSE_NFS
+CC = clang-20
+CXX = clang++-20
+CFLAGS = -fno-common -g -m64 -std=gnu11 -DUSE_SSE2 -fPIE -DUSE_NFS
 WARN_FLAGS = -Wall -Wconversion
-OPT_FLAGS = -O2 -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
+OPT_FLAGS = -O3 -flto -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
 OBJ_EXT = .o
 
 
@@ -34,17 +35,26 @@ OBJ_EXT = .o
 # standard search directories for headers/libraries within yafu.
 # These should normally not be modified.
 INC = -I. -Iinclude -Ims_include -Itop/aprcl -Itop/cmdParser -Itop/ -Ifactor/gmp-ecm \
+<<<<<<< HEAD:Makefile.icc
 	-Iytools -Iysieve -Iaprcl -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -Ifactor/avx-ecm/
+=======
+	-Iytools -Iysieve -Iaprcl -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -pthread
+>>>>>>> 7c852c1 (Fix compatibility\?!):Makefile
 LIBS = -L. 
 
 # we require additional search directories for gmp and gmp-ecm, 
 # for libraries and headers.  Change
 # these if your installation locations differ.
+<<<<<<< HEAD:Makefile.icc
 INC += -I../gmp-install/include
 LIBS += -L../gmp-install/lib
 
 INC += -I../ecm-install/include/
 LIBS += -L../ecm-install/lib/
+=======
+INC += -I/usr/local/include
+LIBS += -L/usr/local/lib
+>>>>>>> 7c852c1 (Fix compatibility\?!):Makefile
 
 # libs for building msieve: should match the GMP lib path for yafu specified above
 MSIEVE_LIBS = -L. -L../gmp-install/lib

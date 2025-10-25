@@ -39,9 +39,7 @@ code to the public domain.
 #include <direct.h>     // _getcwd
 #endif
 
-#ifdef __INTEL_LLVM_COMPILER
 #include <ctype.h>
-#endif
 
 #include "cmdOptions.h"
 

@@ -22,10 +22,11 @@ WIN = 0
 WIN64 = 0
 VBITS = 64
 
-CC = clang
-CFLAGS = -fno-common -g -m64 -std=gnu99 -DUSE_SSE2 -fPIE -DUSE_NFS
+CC = clang-20
+CXX = clang++-20
+CFLAGS = -fno-common -g -m64 -std=gnu11 -DUSE_SSE2 -fPIE -DUSE_NFS
 WARN_FLAGS = -Wall -Wconversion
-OPT_FLAGS = -O2 -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
+OPT_FLAGS = -O3 -flto -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
 OBJ_EXT = .o
 
 
@@ -46,11 +47,16 @@ LIBS += -L../gmp-install/6.2.0-aocc/lib
 INC += -I../ecm-install/7.0.5-clang/include/
 LIBS += -L../ecm-install/7.0.5-clang/lib/
 
+INC += -I/usr/local/include
+LIBS += -L/usr/local/lib
+
 # libs for building msieve: should match the GMP lib path for yafu specified above
 MSIEVE_LIBS = -L. -L../gmp-install/6.2.0-aocc/lib
 
 
 # ===================== msieve feature options =======================
+MSIEVE_LIBS = -L.
+
 ifeq ($(OMP),1)
 	CFLAGS += -fopenmp -DHAVE_OMP
 endif

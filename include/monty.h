@@ -1745,13 +1745,11 @@ __inline static void submod104_x8(__m512i* c1, __m512i* c0, __m512i a1, __m512i 
 	*c1 = _mm512_mask_adc_epi52(a1, msk, bmsk, n1, &bmsk);
 	return;
 }
-
-uint64_t multiplicative_inverse(uint64_t a);
 __m512i multiplicative_inverse104_x8(uint64_t* a);
 
-/*
-#ifdef USE_PERIG_128BIT
-// only needed, so far, for an eventual lucas_prp test
+#endif
+uint64_t multiplicative_inverse(uint64_t a);
+
 static void bin_gcd128(uint64_t *u, uint64_t *v, uint64_t *w)
 {
 	//w = gcd(u, v);
@@ -1815,7 +1813,5 @@ static void bin_gcd128(uint64_t *u, uint64_t *v, uint64_t *w)
 #endif
 */
 
-
-#endif
 
 #endif

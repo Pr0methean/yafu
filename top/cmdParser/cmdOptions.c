@@ -41,9 +41,7 @@ SOFTWARE.
 #include <inttypes.h>
 #include <math.h>
 
-#ifdef __INTEL_LLVM_COMPILER
 #include <ctype.h>
-#endif
 
 // this function prints the help information specified by usageHelp
 // and OptionHelp.

@@ -13,9 +13,7 @@ benefit from your work.
 ----------------------------------------------------------------------*/
 
 #include "nfs_impl.h"
-#ifdef __INTEL_LLVM_COMPILER
 #include <pthread.h>
-#endif
 
 #ifdef USE_NFS
 

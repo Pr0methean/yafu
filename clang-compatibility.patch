@@ -1,0 +1,266 @@
+diff --git a/Makefile b/Makefile
+index eeaf859..461bcb5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -22,10 +22,11 @@ WIN = 0
+ WIN64 = 0
+ VBITS = 64
+ 
+-CC = gcc
+-CFLAGS = -fno-common -g -m64 -std=gnu99 -DUSE_SSE2 -fPIE -DUSE_NFS
++CC = clang-20
++CXX = clang++-20
++CFLAGS = -fno-common -g -m64 -std=gnu11 -DUSE_SSE2 -fPIE -DUSE_NFS
+ WARN_FLAGS = -Wall -Wconversion
+-OPT_FLAGS = -O2 -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
++OPT_FLAGS = -O3 -flto -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
+ OBJ_EXT = .o
+ 
+ 
+@@ -34,17 +35,14 @@ OBJ_EXT = .o
+ # standard search directories for headers/libraries within yafu.
+ # These should normally not be modified.
+ INC = -I. -Iinclude -Ims_include -Itop/aprcl -Itop/cmdParser -Itop/ -Ifactor/gmp-ecm \
+-	-Iytools -Iysieve -Iaprcl -Ignfs -Ignfs/poly -Ignfs/poly/stage1
++	-Iytools -Iysieve -Iaprcl -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -pthread
+ LIBS = -L. 
+ 
+ # we require additional search directories for gmp and gmp-ecm, 
+ # for libraries and headers.  Change
+ # these if your installation locations differ.
+-INC += -I../gmp-install/6.2.1/include
+-LIBS += -L../gmp-install/6.2.1/lib
+-
+-INC += -I../ecm-install/7.0.6-wsl/include/
+-LIBS += -L../ecm-install/7.0.6-wsl/lib/
++INC += -I/usr/local/include
++LIBS += -L/usr/local/lib
+ 
+ # libs for building msieve 
+ MSIEVE_LIBS = -L. -L../gmp_install/gmp_6.2.0/lib
+diff --git a/Makefile.clang b/Makefile.clang
+index 4af4356..fd7e19f 100644
+--- a/Makefile.clang
++++ b/Makefile.clang
+@@ -22,10 +22,11 @@ WIN = 0
+ WIN64 = 0
+ VBITS = 64
+ 
+-CC = clang
+-CFLAGS = -fno-common -g -m64 -std=gnu99 -DUSE_SSE2 -fPIE -DUSE_NFS
++CC = clang-20
++CXX = clang++-20
++CFLAGS = -fno-common -g -m64 -std=gnu11 -DUSE_SSE2 -fPIE -DUSE_NFS
+ WARN_FLAGS = -Wall -Wconversion
+-OPT_FLAGS = -O2 -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
++OPT_FLAGS = -O3 -flto -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
+ OBJ_EXT = .o
+ 
+ 
+@@ -40,11 +41,8 @@ LIBS = -L.
+ # we require additional search directories for gmp and gmp-ecm, 
+ # for libraries and headers.  Change
+ # these if your installation locations differ.
+-INC += -I/users/buhrow/src/c/gmp_install/6.2.0-aocc/include
+-LIBS += -L/users/buhrow/src/c/gmp_install/6.2.0-aocc/lib
+-
+-INC += -I/users/buhrow/src/c/ecm_install/7.0.5-clang/include/
+-LIBS += -L/users/buhrow/src/c/ecm_install/7.0.5-clang/lib/
++INC += -I/usr/local/include
++LIBS += -L/usr/local/lib
+ 
+ # ===================== compiler options =========================
+ 
+@@ -56,7 +54,7 @@ endif
+ 
+ 
+ # ===================== msieve feature options =======================
+-MSIEVE_LIBS = -L. -L../gmp_install/gmp_6.2.0/lib
++MSIEVE_LIBS = -L.
+ 
+ ifeq ($(OMP),1)
+ 	CFLAGS += -fopenmp -DHAVE_OMP
+diff --git a/bin/linux/yafu b/bin/linux/yafu
+old mode 100644
+new mode 100755
+diff --git a/factor/nfs/nfs_sieving.c b/factor/nfs/nfs_sieving.c
+index f1fabf6..53d0b84 100644
+--- a/factor/nfs/nfs_sieving.c
++++ b/factor/nfs/nfs_sieving.c
+@@ -14,9 +14,7 @@ benefit from your work.
+ 
+ #include <stdio.h>
+ #include "nfs_impl.h"
+-#ifdef __INTEL_LLVM_COMPILER
+ #include <pthread.h>
+-#endif
+ #include <math.h>
+ 
+ #ifdef USE_NFS
+diff --git a/factor/nfs/nfs_threading.c b/factor/nfs/nfs_threading.c
+index 01c4657..cb7b969 100644
+--- a/factor/nfs/nfs_threading.c
++++ b/factor/nfs/nfs_threading.c
+@@ -13,9 +13,7 @@ benefit from your work.
+ ----------------------------------------------------------------------*/
+ 
+ #include "nfs_impl.h"
+-#ifdef __INTEL_LLVM_COMPILER
+ #include <pthread.h>
+-#endif
+ 
+ #ifdef USE_NFS
+ 
+diff --git a/factor/qs/msieve/lanczos_matmul0.c b/factor/qs/msieve/lanczos_matmul0.c
+index 4bdbb0d..72fe721 100644
+--- a/factor/qs/msieve/lanczos_matmul0.c
++++ b/factor/qs/msieve/lanczos_matmul0.c
+@@ -18,9 +18,7 @@ Purpose:	Port into Yafu-1.14.
+ 
+ #include "lanczos.h"
+ #include "ytools.h"
+-#ifdef __INTEL_LLVM_COMPILER
+ #include <pthread.h>
+-#endif
+ 
+ /*-------------------------------------------------------------------*/
+ static void yafu_mul_unpacked(qs_packed_matrix_t *matrix,
+diff --git a/factor/qs/msieve/savefile.c b/factor/qs/msieve/savefile.c
+index eeaba30..8396baa 100644
+--- a/factor/qs/msieve/savefile.c
++++ b/factor/qs/msieve/savefile.c
+@@ -201,6 +201,8 @@ void qs_savefile_read_line(char *buf, size_t max_len, qs_savefile_t *s) {
+ #endif
+ }
+ 
++void qs_savefile_flush(qs_savefile_t *s);
++
+ /*--------------------------------------------------------------------*/
+ void qs_savefile_write_line(qs_savefile_t *s, char *buf) {
+ 
+diff --git a/include/monty.h b/include/monty.h
+index f121579..4d58919 100644
+--- a/include/monty.h
++++ b/include/monty.h
+@@ -1743,10 +1743,10 @@ __inline static void submod104_x8(__m512i* c1, __m512i* c0, __m512i a1, __m512i
+ 	*c1 = _mm512_mask_adc_epi52(a1, msk, bmsk, n1, &bmsk);
+ 	return;
+ }
+-
+-uint64_t multiplicative_inverse(uint64_t a);
+ __m512i multiplicative_inverse104_x8(uint64_t* a);
+ 
++#endif
++uint64_t multiplicative_inverse(uint64_t a);
+ 
+ static void bin_gcd128(uint64_t *u, uint64_t *v, uint64_t *w)
+ {
+@@ -1810,6 +1810,4 @@ static void bin_gcd128(uint64_t *u, uint64_t *v, uint64_t *w)
+ }
+ 
+ 
+-#endif
+-
+ #endif
+diff --git a/top/aprcl/tinyprp.c b/top/aprcl/tinyprp.c
+index a157605..7a6d3d8 100644
+--- a/top/aprcl/tinyprp.c
++++ b/top/aprcl/tinyprp.c
+@@ -73,7 +73,7 @@ int fermat_prp_64x1(uint64_t n)
+ 
+ 	uint64_t m = 1ULL << (62 - __lzcnt64(n));   // set a mask at the leading bit - 2
+ 
+-#elif defined(__GNUC__) || defined(__INTEL_LLVM_COMPILER)
++#else
+ 
+ 	uint64_t m = 1ULL << (62 - __builtin_clzll(n));
+ 
+@@ -92,7 +92,7 @@ int fermat_prp_64x1(uint64_t n)
+ 
+ 	uint64_t m = 1ULL << (62 - pos);   // set a mask at the leading bit - 2
+ 
+-#elif defined(__GNUC__) || defined(__INTEL_LLVM_COMPILER)
++#else
+ 
+ 	uint64_t m = 1ULL << (62 - __builtin_clzll(n));
+ 
+@@ -890,7 +890,7 @@ static uint128_t my_random(void)
+ 	uint128_t x = seed ^ (seed >> 17) ^ (seed << 13);
+ 	return x;
+ }
+-static my_random_reset(void)
++static void my_random_reset(void)
+ {
+ 	seed = ((uint128_t)0x123456789ull << 92) + ((uint128_t)0xabcdef << 36) + 0x987654321ull;
+ }
+diff --git a/top/cmdParser/cmdOptions.c b/top/cmdParser/cmdOptions.c
+index d0d3bee..8b216e2 100644
+--- a/top/cmdParser/cmdOptions.c
++++ b/top/cmdParser/cmdOptions.c
+@@ -41,9 +41,7 @@ SOFTWARE.
+ #include <inttypes.h>
+ #include <math.h>
+ 
+-#ifdef __INTEL_LLVM_COMPILER
+ #include <ctype.h>
+-#endif
+ 
+ // this function prints the help information specified by usageHelp
+ // and OptionHelp.
+diff --git a/top/driver.c b/top/driver.c
+index 84c08bb..db4fd7e 100644
+--- a/top/driver.c
++++ b/top/driver.c
+@@ -39,9 +39,7 @@ code to the public domain.
+ #include <direct.h>     // _getcwd
+ #endif
+ 
+-#ifdef __INTEL_LLVM_COMPILER
+ #include <ctype.h>
+-#endif
+ 
+ #include "cmdOptions.h"
+ 
+diff --git a/yafu.ini b/yafu.ini
+index 2926eb3..a510929 100644
+--- a/yafu.ini
++++ b/yafu.ini
+@@ -322,7 +322,7 @@ B1ecm=11000
+ % specify a path to an ECM executable file
+ %ecm_path=..\..\..\..\gmp-ecm\bin\x64\Release\ecm.exe
+ %ecm_path=..\..\..\..\ecm_install\mingw\bin\ecm.exe
+-ecm_path=../ecm-install/bin/ecm
++ecm_path=/usr/local/bin/ecm
+ %ecm_path=../trosi_ecm_git/ecm
+ 
+ % Use this to use gmp-ecm instead of avx-ecm when avx-ecm available
+@@ -397,3 +397,4 @@ tune_info=Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz,LINUX64,1.59078e-05,0.196092,
+ tune_info=Intel(R) Xeon(R) Gold 6254 CPU @ 3.10GHz,LINUX64,4.1495e-06,0.206457,0.0313896,0.115034,97.6916,2.03547e-07,0.0125802,0.0022736,42
+ tune_info=Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz,LINUX64,1.61863e-05,0.190237,0.0430548,0.111798,100.537,42
+ tune_info=AMD EPYC 9174F 16-Core Processor               ,LINUX64,4.44807e-06,0.203069,0.0257548,0.113557,96.7904,1.10534e-07,0.00304708,0.00236159,42
++tune_info=13th Gen Intel(R) Core(TM) i7-1365U,LINUX64,4.71498e-06,0.231182,-nan,-nan,-nan,1.77523e-06,0.260994,0.00222167,42
+diff --git a/ysieve/wrapper.c b/ysieve/wrapper.c
+index 0f3907f..d187d6a 100644
+--- a/ysieve/wrapper.c
++++ b/ysieve/wrapper.c
+@@ -33,7 +33,7 @@ SOFTWARE.
+ #include <string.h>
+ #include <math.h>
+ #include "threadpool.h"
+-
++#include "tinyprp.h"
+ 
+ 
+ // known issues:
+diff --git a/ytools/threadpool.c b/ytools/threadpool.c
+index 57e0e00..2e36922 100644
+--- a/ytools/threadpool.c
++++ b/ytools/threadpool.c
+@@ -24,6 +24,7 @@ SOFTWARE.
+ 
+ #include <stdint.h>
+ #include <stdio.h>
++#include <unistd.h>
+ #include "threadpool.h"
+ 
+ 

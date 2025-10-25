@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <stdint.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "threadpool.h"
 
 
