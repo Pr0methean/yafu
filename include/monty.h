@@ -1811,6 +1811,5 @@ static void bin_gcd128(uint64_t *u, uint64_t *v, uint64_t *w)
 	w[0] = u[0];
 }
 #endif
-*/
 
 
