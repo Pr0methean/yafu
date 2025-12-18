@@ -224,31 +224,6 @@ tiny_qs_params * init_tinysiqs(void);
 u32 tinysiqs(tiny_qs_params *g_params, mpz_t n, mpz_t factor1, mpz_t factor2);
 tiny_qs_params *free_tinysiqs(tiny_qs_params *g_params);
 
-#endif /* !_COFACTORIZE_H_ */
-
-
-#ifndef _COFACTORIZE_H_
-#define _COFACTORIZE_H_
-
-#include <gmp.h>
-
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-
-#ifdef _MSC_VER
-typedef signed __int64 s64;
-typedef unsigned __int64 u64;
-#define INLINE _inline
-#else
-typedef long long s64;
-typedef unsigned long long u64;
-#define INLINE inline
-#endif
-
 static INLINE u64 gmp2u64(mpz_t src) 
 {
   /* mpz_export is terribly slow */
@@ -273,65 +248,6 @@ static INLINE void u64_2gmp(u64 src, mpz_t dest)
 #endif
 }
 
-/* maximum size pool of primes from which
-   factor base is constructed */
-#define NUM_PRIMES_TINY 1024
-
-   /* the number of dependencies the linear algebra
-	  will find */
-#define NUM_EXTRA_RELATIONS_TINY 16
-
-	  /* largest number of relations that can go into the
-		 linear algebra (includes relations combined from
-		 pairs of partial relations */
-#define MAX_RELATIONS_TINY 512
-
-		 /* the largest possible factor base */
-#define MAX_FB_SIZE_TINY (MAX_RELATIONS_TINY - \
-                          NUM_EXTRA_RELATIONS_TINY)
-
-/* offset of the first valid factor base prime */
-#define MIN_FB_OFFSET_TINY 1
-
-/* offset of the first factor base prime
-   actually contributing to the sieving */
-#define MIN_FB_OFFSET_TO_SIEVE_TINY 7
-
-   /* number of primes used when testing multipliers */
-#define NUM_TEST_PRIMES_TINY 30
-
-/* fudge factor to the target sieve value to account
-   for not sieving with the smallest factor base primes.
-   BRB: it is decidedly better to use smaller values
-   for small problem sizes.  Above 116 bits needs yet
-   another tier to increase accuracy. */
-#define SMALL_PRIME_FUDGE_TINY 1
-#define SMALL_PRIME_FUDGE 6
-
-   /* maximum number of MPQS polynomials to be computed */
-#define MAX_POLY_TINY 256
-
-/* maximum number of FB primes that contribute to
-   a single polynomial 'A' value */
-#define MAX_POLY_FACTORS_TINY 5
-
-   /* the size of the sieve interval. Each polynomial will
-	  sieve over this many positive and negative values
-	  BRB: it is decidedly better to use smaller values
-	  for small problem sizes. Above 116 bits needs yet
-	  another tier to increase accuracy. */
-#define SIEVE_SIZE_TINY 4096
-#define SIEVE_SIZE 16384
-
-	  /* value of the sieve root used when sieving is not
-		 to be performed for a given FB prime. Since this is
-		 larger than SIEVE_SIZE_TINY no special-case code
-		 is needed in the core sieve code */
-#define DO_NOT_SIEVE_TINY 65535
-
-		 /* maximum number of factors a relation can have (the
-			large prime is stored separately) */
-#define MAX_FACTORS_TINY 40
 
 			/* partial relations are listed in the order
 			   in which they occur, and a hashtable matches
