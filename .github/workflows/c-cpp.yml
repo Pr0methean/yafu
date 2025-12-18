@@ -15,8 +15,6 @@ jobs:
     - uses: actions/checkout@v6
     - name: Install GMP-ECM
       run: sudo apt-get install libecm-dev gmp-ecm
-    - name: configure
-      run: ./configure --with-gmp=/usr/lib/x86_64-linux-gnu --disable-shared --enable-static
     - name: make
       run: make -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
     - name: make check
