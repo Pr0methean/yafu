@@ -1,0 +1,25 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install GMP-ECM
+      run: sudo apt-get install libecm-dev gmp-ecm
+    - name: configure
+      run: ./configure --with-gmp=/usr/lib/x86_64-linux-gnu --disable-shared --enable-static
+    - name: make
+      run: make -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
+    - name: make check
+      run: make check -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
+    - name: make distcheck
+      run: make distcheck -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
