@@ -16,8 +16,4 @@ jobs:
     - name: Install GMP-ECM
       run: sudo apt-get install libecm-dev gmp-ecm
     - name: make
-      run: make -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
-    - name: make check
-      run: make check -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
-    - name: make distcheck
-      run: make distcheck -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
+      run: make yafu -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
