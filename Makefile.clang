@@ -24,7 +24,7 @@ VBITS = 64
 
 CC = clang
 CXX = clang++
-CFLAGS = -fno-common -g -m64 -std=gnu11 -DUSE_SSE2 -fPIE -DUSE_NFS
+CFLAGS = -v -fno-common -g -m64 -std=gnu11 -DUSE_SSE2 -fPIE -DUSE_NFS
 WARN_FLAGS = -Wall -Wconversion
 OPT_FLAGS = -O3 -flto -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
 OBJ_EXT = .o
