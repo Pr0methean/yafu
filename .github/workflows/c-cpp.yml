@@ -23,7 +23,7 @@ jobs:
     - name: Override /usr/bin/ld
       run: |
         sudo rm /usr/bin/ld
-        sudo ln -s /usr/lib/llvm-21/bin/ld /usr/bin/ld
+        sudo ln -s /usr/lib/llvm-21/bin/lld /usr/bin/ld
     - uses: actions/checkout@v6
     - name: Install GMP-ECM
       run: sudo apt-get install libecm-dev gmp-ecm
