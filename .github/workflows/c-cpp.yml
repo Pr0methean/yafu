@@ -24,7 +24,7 @@ jobs:
     - name: Install prerequisites
       run: sudo apt-get install libecm-dev gmp-ecm libgcc-14-dev
     - name: make
-      run: make yafu -f Makefile.clang ICELAKE=1 ECM=1 VBITS=512 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
+      run: make yafu -f Makefile.clang ICELAKE=1 ECM=1 VBITS=256 USE_SSE41=1 USE_AVX2=1 USE_BMI2=1
     - uses: actions/upload-artifact@v6
       with:
         name: Yafu
