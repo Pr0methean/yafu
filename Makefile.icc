@@ -28,7 +28,7 @@ CFLAGS = -v -fno-common -g -m64 -std=gnu11 -DUSE_SSE2 -fPIE -DUSE_NFS
 WARN_FLAGS = -Wall -Wconversion
 OPT_FLAGS = -O3 -flto -D_FILE_OFFSET_BITS=64 -DNDEBUG -D_LARGEFILE64_SOURCE -DVBITS=$(VBITS)
 OBJ_EXT = .o
-LDFLAGS += -fuse-ld=/usr/lib/llvm-21/bin/lld -flto
+LDFLAGS += -fuse-ld=/usr/lib/llvm-21/bin/lld -flto -static
 
 # ===================== path options =============================
 
