@@ -582,7 +582,9 @@ tinyqs_marker:
             printf("average time per input = %.2f ms\n", 1000 * t_time / (double)num);
         }
 
-        params = free_tinyqs(params);
+        // UPSTREAM FIXME: free_tinyqs doesn't exist -- params = free_tinyqs(params);
+        free(params);
+
         mpz_clear(gmp_comp);
         mpz_clear(fact1);
         mpz_clear(fact2);
