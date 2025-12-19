@@ -35,26 +35,14 @@ LDFLAGS += -fuse-ld=/usr/lib/llvm-21/bin/lld -flto
 # standard search directories for headers/libraries within yafu.
 # These should normally not be modified.
 INC = -I. -Iinclude -Ims_include -Itop/aprcl -Itop/cmdParser -Itop/ -Ifactor/gmp-ecm \
-<<<<<<< HEAD:Makefile.icc
-	-Iytools -Iysieve -Iaprcl -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -Ifactor/avx-ecm/
-=======
-	-Iytools -Iysieve -Iaprcl -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -pthread
->>>>>>> 7c852c1 (Fix compatibility\?!):Makefile
+	-Iytools -Iysieve -Iaprcl -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -pthread -Ifactor/avx-ecm/
 LIBS = -L. 
 
 # we require additional search directories for gmp and gmp-ecm, 
 # for libraries and headers.  Change
 # these if your installation locations differ.
-<<<<<<< HEAD:Makefile.icc
-INC += -I../gmp-install/include
-LIBS += -L../gmp-install/lib
-
-INC += -I../ecm-install/include/
-LIBS += -L../ecm-install/lib/
-=======
 INC += -I/usr/local/include
 LIBS += -L/usr/local/lib
->>>>>>> 7c852c1 (Fix compatibility\?!):Makefile
 
 # libs for building msieve: should match the GMP lib path for yafu specified above
 MSIEVE_LIBS = -L. -L../gmp-install/lib
